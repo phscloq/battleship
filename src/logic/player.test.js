@@ -1,6 +1,6 @@
 import { Ship } from "./ship";
 import {Board} from "./gameboard"
-
+import { Player } from "./player";
 const ship = new Ship('carrier');
 const ship1 = new Ship('battleship');
 const ship2 = new Ship('cruiser');
@@ -35,5 +35,6 @@ test('player starts the attack', ()=>{
 })
 turn=1;
 test('player attacks with its method', ()=>{
-    expect(player.attack(compBoard, x, y)).toBe('Attack made!');    
+    const player = new Player('Ben', userBoard);
+    expect(player.attack(compBoard, 3, 3)).toBe("It's a hit!");    
 })
