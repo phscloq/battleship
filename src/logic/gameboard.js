@@ -1,5 +1,6 @@
 import { hitDom } from "./dom";
 import { Ship } from "./ship";
+import { Game } from "./game";
 class Board{
     constructor(id,rows, cols, ship, currentShips){
         this.id=id;
@@ -45,18 +46,19 @@ class Board{
     }
     
     receiveAttack(board, row, colmn){
-        console.log(this.userMap);
+        console.log(this.ship);
         console.log(row);
         console.log(colmn);
         if(this.userMap[row][colmn].occupied==true){
             const model = this.userMap[row][colmn].ship.type
             const index = this.ship.findIndex(a=>a.type==model);
             this.ship[index].hit(row, colmn);
-            console.log( this.isAllShipsSunked());
+            
            
             hitDom(board, row, colmn);
-            this.isAllShipsSunked();
+            
             console.log("It's a hit!");
+            return this.isAllShipsSunked();
         }
         else{
             this.missAttacks.push([row, colmn]);
@@ -74,7 +76,7 @@ class Board{
   
             }
         }
-        if(sunked==5){
+        if(sunked==this.ship.length){
             return true;
         }
         else{

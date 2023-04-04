@@ -5,7 +5,7 @@ class Player{
     }
      attack(enemyBoard, row, colmn){
       
-          enemyBoard.receiveAttack(enemyBoard, row, colmn);
+          return enemyBoard.receiveAttack(enemyBoard, row, colmn);
          
         
     }

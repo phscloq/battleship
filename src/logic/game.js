@@ -43,14 +43,20 @@ class Game{
             if(currentPlayer==this.player1){
            
                 const {row, colmn}= await this.getUserClick(currentBoard);
-                this.player1.attack(currentBoard, row, colmn);
+                if(this.player1.attack(currentBoard, row, colmn)){
+                    this.gameEnd(currentBoard, currentPlayer);
+                    break;
+                }
                 currentPlayer=this.player2;
                 currentBoard=this.board1;
 
             }
             else{
                 const {row, colmn}= await this.getUserClick(currentBoard);
-                this.player2.attack(currentBoard, row, colmn);
+                if(this.player2.attack(currentBoard, row, colmn)){
+                    this.gameEnd(currentBoard, currentPlayer);
+                    break;
+                }
                 currentPlayer=this.player1;
                 currentBoard=this.board2;
      
