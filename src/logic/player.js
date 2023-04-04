@@ -3,9 +3,13 @@ class Player{
         this.playerName = playerName;
         this.board=board;
     }
-    attack(enemyBoard, row, colmn){
-        return enemyBoard.receiveAttack(row, colmn);
+     attack(enemyBoard, row, colmn){
+      
+          enemyBoard.receiveAttack(enemyBoard, row, colmn);
+         
         
     }
+    
 }
+
 export {Player};

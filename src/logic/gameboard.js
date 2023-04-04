@@ -1,5 +1,8 @@
+import { hitDom } from "./dom";
+import { Ship } from "./ship";
 class Board{
-    constructor(rows, cols, ship, currentShips){
+    constructor(id,rows, cols, ship, currentShips){
+        this.id=id;
         this.rows = rows;
         this.cols = cols;
         this.userMap = this.createBoard(rows, cols)
@@ -41,35 +44,41 @@ class Board{
      
     }
     
-    receiveAttack(x, y){
-        if(this.userMap[x][y].occupied==true){
-            const model = this.userMap[x][y].ship.type
+    receiveAttack(board, row, colmn){
+        console.log(this.userMap);
+        console.log(row);
+        console.log(colmn);
+        if(this.userMap[row][colmn].occupied==true){
+            const model = this.userMap[row][colmn].ship.type
             const index = this.ship.findIndex(a=>a.type==model);
-            this.ship[index].hit(x,y);
+            this.ship[index].hit(row, colmn);
+            console.log( this.isAllShipsSunked());
+           
+            hitDom(board, row, colmn);
             this.isAllShipsSunked();
-            return "It's a hit!";
+            console.log("It's a hit!");
         }
         else{
-            this.missAttacks.push([x, y]);
-            return `Miss at ${x} | ${y}`;
+            this.missAttacks.push([row, colmn]);
+            console.log(`Miss at ${row} | ${colmn}`);
         }
   
     }
     isAllShipsSunked(){
-        if(this.currentShips!=0){
-          
-        
+        let sunked=0;
+       /*  console.log(this.ship); */
         for(let i=0; i<this.ship.length; i++){
-            if(this.ship[i].sunk==true){
-                this.currentShips= this.currentShips-1;
+      
+            if(this.ship[i].isSunk()==true){
+                sunked++;
+  
             }
         }
-    }
-        if(this.currentShips>0){
-        return false;    
+        if(sunked==5){
+            return true;
         }
-        else{  return true;}
-    
+        else{
+            return false;}
     }
 
 }

@@ -23,6 +23,7 @@ class Ship{
             if(this.length===this.hits.length){
                 this.sunk=true;
             }
+            return this.sunk;
         }
 
 }
