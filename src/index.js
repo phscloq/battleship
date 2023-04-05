@@ -7,16 +7,35 @@ import './style.css';
 const main = document.createElement('div');
 const playerBoardDiv= document.createElement('div');
 const player2BoardDiv= document.createElement('div');
+const boards = document.createElement('div');
 main.setAttribute('id', 'main');
 playerBoardDiv.setAttribute('id', 'pBoard');
 player2BoardDiv.setAttribute('id', 'cBoard');
 playerBoardDiv.classList.add('board')
 player2BoardDiv.classList.add('board')
-main.append(playerBoardDiv, player2BoardDiv);
+boards.setAttribute('id', 'boards');
+boards.append(playerBoardDiv, player2BoardDiv);
 const body=document.querySelector('body');
 body.appendChild(main);
 
-
+const playSettings= document.createElement('div');
+const welcomeTitlte= document.createElement('h1');
+const playTypes=document.createElement('div');
+const vsAI=document.createElement('button');
+const vsP2=document.createElement('button');
+const finishedMove=document.createElement('button');
+finishedMove.innerText='Finished Move';
+finishedMove.setAttribute('id', 'finishedMove');
+welcomeTitlte.innerText='Battleship';
+vsAI.innerText='Player Vs. AI';
+vsP2.innerText='Player Vs. Player';
+playSettings.setAttribute('id', 'settings');
+playTypes.setAttribute('id', 'buttonsDiv');
+vsAI.setAttribute('id', 'vsAI');
+vsP2.setAttribute('id', 'vsP2');
+playTypes.append(vsAI, vsP2);
+playSettings.append(welcomeTitlte, playTypes);
+main.append(playSettings,boards, finishedMove);
 const ship = new Ship('carrier');
 const ship1 = new Ship('battleship');
 const ship2 = new Ship('cruiser');
@@ -70,5 +89,18 @@ function createBoard(boardName, divName, boardID){
 }
 
 }
-const game=new Game(player,computer,userBoard,compBoard);
-game.play();
+document.getElementById('vsAI').addEventListener('click', ()=>{
+    document.getElementById('settings').style.display='none';
+    const boards = document.querySelector('#boards');
+    boards.style.display='flex';
+    const game=new Game(player,computer,userBoard,compBoard, 'vsAI');
+    game.play();
+})
+document.getElementById('vsP2').addEventListener('click', ()=>{
+    document.getElementById('settings').style.display='none';
+    const boards = document.querySelector('#boards');
+    boards.style.display='flex';
+    document.querySelector('#finishedMove').style.display='block';
+    const game=new Game(player,computer,userBoard,compBoard, 'vsP2');
+    game.play();
+})
