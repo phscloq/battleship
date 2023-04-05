@@ -1,4 +1,4 @@
-import { hitDom } from "./dom";
+import { hitDom, missDom } from "./dom";
 import { Ship } from "./ship";
 import { Game } from "./game";
 class Board{
@@ -62,6 +62,7 @@ class Board{
         }
         else{
             this.missAttacks.push([row, colmn]);
+            missDom(board, row, colmn);
             console.log(`Miss at ${row} | ${colmn}`);
         }
   

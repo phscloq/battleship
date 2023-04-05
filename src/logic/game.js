@@ -26,25 +26,30 @@ console.log("Working");
 import { Ship } from "./ship.js";
 import { Board } from "./gameboard.js";
 import { Player } from "./player.js";
+import { hidden, show } from "./dom.js";
 let turn=0;
-
+let hitRow; let r; let c;
+let hitColmn;
 class Game{
-    constructor(player1, player2, board1, board2){
+    constructor(player1, player2, board1, board2, playType){
         this.player1=player1;
         this.player2=player2;
         this.board1=board1;
         this.board2=board2;
+        this.playType=playType; 
     }
     async play(){
         let currentPlayer=this.player1;
         let currentBoard = this.board2;
+        hidden('cBoard');
         while(!this.gameEnd(currentBoard, currentPlayer)){
-            
+        
             if(currentPlayer==this.player1){
            
                 const {row, colmn}= await this.getUserClick(currentBoard);
                 if(this.player1.attack(currentBoard, row, colmn)){
                     this.gameEnd(currentBoard, currentPlayer);
+                    
                     break;
                 }
                 currentPlayer=this.player2;
@@ -52,19 +57,58 @@ class Game{
 
             }
             else{
-                const {row, colmn}= await this.getUserClick(currentBoard);
-                if(this.player2.attack(currentBoard, row, colmn)){
-                    this.gameEnd(currentBoard, currentPlayer);
-                    break;
+                if(this.playType=='vsAI'){
+                this.aiMove(currentBoard, currentPlayer);
                 }
-                currentPlayer=this.player1;
-                currentBoard=this.board2;
+                else if(this.playType=='vsP2'){
+                    console.log("Player 2's turn")
+                    console.log(currentBoard);
+                    const {row, colmn}= await this.getUserClick(currentBoard);
+                    if(this.player2.attack(currentBoard, row, colmn)){
+                        this.gameEnd(currentBoard, currentPlayer);
+                        break;
+                    }  
+                    currentPlayer=this.player1;
+                    currentBoard=this.board2; 
+                }
+               
      
             }
-
+            document.querySelector('#finishedMove').addEventListener('click', ()=>{
+                if(currentPlayer==this.player1){
+                    hidden('pBoard');
+                    show(this.board1);
+                 
+                }
+                else if(currentPlayer==this.player2){
+                    hidden('cBoard');
+                    show(this.board2);
+                    
+                }
+            });
         }
        
-        /* this.declareWinner() */
+      
+    }
+    aiMove(currentBoard, currentPlayer){
+        
+        if(hitRow==undefined){
+         r=Math.floor(Math.random()*10);
+         c=Math.floor(Math.random()*10);}
+        else if(hitRow==r && currentBoard.missAttacks[currentBoard.missAttacks.length-1][0]==hitRow+1){
+            r=hitRow+1;
+        }
+        else if(r==hitRow+1){
+                r=hitRow-1;
+        }
+        
+        if(this.player2.attack(currentBoard, r, c)){
+           
+            hitRow=r;
+            hitColmn=c;
+            this.gameEnd(currentBoard, currentPlayer);
+        }
+        console.log(currentBoard.missAttacks);
     }
     getUserClick(currentBoard){
         return new Promise(resolve=>{
