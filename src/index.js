@@ -1,7 +1,9 @@
+import { Game } from "./logic/game.js";
+import { createBoard } from "./logic/default.js";
 import { Ship } from "./logic/ship.js";
 import { Board } from "./logic/gameboard.js";
 import { Player } from "./logic/player.js";
-import { Game } from "./logic/game.js";
+import { endScreen } from "./logic/dom.js";
 import './style.css';
 
 const main = document.createElement('div');
@@ -36,6 +38,7 @@ vsP2.setAttribute('id', 'vsP2');
 playTypes.append(vsAI, vsP2);
 playSettings.append(welcomeTitlte, playTypes);
 main.append(playSettings,boards, finishedMove);
+
 const ship = new Ship('carrier');
 const ship1 = new Ship('battleship');
 const ship2 = new Ship('cruiser');
@@ -62,38 +65,18 @@ compBoard.placeShip(ship5, 3,0, 'right');
     compBoard.placeShip(ship7, 7,2, 'bottom');
     compBoard.placeShip(ship8, 1, 7, 'right');
     compBoard.placeShip(ship9, 0,2, 'right');
+    createBoard(userBoard, playerBoardDiv, 'pBoard');
+    createBoard(compBoard, player2BoardDiv, 'cBoard');
+    const player= new Player('user', userBoard);
+    const computer= new Player('Computer', compBoard);
 
 
-createBoard(userBoard, playerBoardDiv, 'pBoard');
-createBoard(compBoard, player2BoardDiv, 'cBoard');
-const player= new Player('user', userBoard);
-const computer= new Player('Computer', compBoard);
-
-
-function createBoard(boardName, divName, boardID){
-    
-    for(let i=0; i<boardName.userMap.length; i++){
-        for(let j=0; j<boardName.userMap[i].length; j++){
-            let cell=document.createElement('div');
-            cell.setAttribute(`dataX`, i);
-            cell.setAttribute('dataY', j);
-            cell.classList.add('cell');
-            cell.setAttribute('id', boardID);
-            if(boardName.userMap[i][j].occupied==true){
-            cell.classList.add('occupied')
-            cell.innerText= boardName.userMap[i][j].ship.type;
-            }
-            
-            divName.appendChild(cell);
-        }
-}
-
-}
 document.getElementById('vsAI').addEventListener('click', ()=>{
     document.getElementById('settings').style.display='none';
     const boards = document.querySelector('#boards');
     boards.style.display='flex';
-    const game=new Game(player,computer,userBoard,compBoard, 'vsAI');
+   
+    const game=new Game( player,computer,userBoard,compBoard, 'vsAI');
     game.play();
 })
 document.getElementById('vsP2').addEventListener('click', ()=>{
@@ -101,6 +84,21 @@ document.getElementById('vsP2').addEventListener('click', ()=>{
     const boards = document.querySelector('#boards');
     boards.style.display='flex';
     document.querySelector('#finishedMove').style.display='block';
+  
+    const game=new Game(player,computer,userBoard,compBoard, 'vsP2');
+    const rematch = document.createElement('button');
+    rematch.setAttribute('id', 'rematch');
+    rematch.innerText = 'Rematch';
+    rematch.style.display = 'none';
+    main.appendChild(rematch);
+    console.log(rematch);
+    game.play();
+  
+})
+ 
+function newGame(){
     const game=new Game(player,computer,userBoard,compBoard, 'vsP2');
     game.play();
-})
+}
+
+export {newGame};
