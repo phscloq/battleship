@@ -1,4 +1,4 @@
-import { hitDom, missDom } from "./dom";
+import { hitDom, missDom, sunkedShip } from "./dom";
 import { Ship } from "./ship";
 import { Game } from "./game";
 class Board{
@@ -58,7 +58,8 @@ class Board{
             hitDom(board, row, colmn);
             
             console.log("It's a hit!");
-            return this.isAllShipsSunked();
+            console.log(board);
+            return this.isAllShipsSunked(board);
         }
         else{
             this.missAttacks.push([row, colmn]);
@@ -67,14 +68,15 @@ class Board{
         }
   
     }
-    isAllShipsSunked(){
+    isAllShipsSunked(board){
         let sunked=0;
        /*  console.log(this.ship); */
         for(let i=0; i<this.ship.length; i++){
       
             if(this.ship[i].isSunk()==true){
                 sunked++;
-  
+                console.log(board);
+                sunkedShip(board, this.ship[i].hits, this.ship[i]);
             }
         }
         if(sunked==this.ship.length){
