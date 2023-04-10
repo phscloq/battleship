@@ -7,7 +7,6 @@ class Board{
         this.rows = rows;
         this.cols = cols;
         this.userMap = this.createBoard(rows, cols)
-        this.missAttacks= [];
         this.ship = ship;
         this.currentShips=currentShips;
     }
@@ -49,6 +48,9 @@ class Board{
         console.log(this.ship);
         console.log(row);
         console.log(colmn);
+     
+       
+        
         if(this.userMap[row][colmn].occupied==true){
             const model = this.userMap[row][colmn].ship.type
             const index = this.ship.findIndex(a=>a.type==model);
@@ -56,14 +58,16 @@ class Board{
             
            
             hitDom(board, row, colmn);
-            
+
+            document.getElementById('moveText').textContent=`It's a hit!`;
             console.log("It's a hit!");
             console.log(board);
             return this.isAllShipsSunked(board);
         }
         else{
-            this.missAttacks.push([row, colmn]);
+           
             missDom(board, row, colmn);
+            document.getElementById('moveText').textContent=`It's a miss!`;
             console.log(`Miss at ${row} | ${colmn}`);
         }
   
