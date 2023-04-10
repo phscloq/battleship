@@ -30,6 +30,10 @@ display: none;
     white-space: nowrap;
 overflow: hidden;
     text-overflow: clip;
+    cursor: crosshair;
+}
+.cell:hover{
+    background-color: green;
 }
 
 .occupied{
@@ -37,10 +41,13 @@ overflow: hidden;
 }
 .hit{
     background-color: red !important;
+    cursor: not-allowed;
 }
 .missed{
     background-color: black !important;
+    cursor: not-allowed;
 }
+
 #settings{
     display: flex;
     flex-direction: column;
